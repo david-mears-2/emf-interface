@@ -61,7 +61,7 @@
                             <option value="false">No</option>
                         </select>
 
-                        <label for="futureFilter">Exclude events that finished in the past:</label>
+                        <label for="futureFilter">Don't show events that finished in the past:</label>
                         <input type="checkbox" id="futureFilter" onchange="applyFilters()">
                     </div>
                 </div>
@@ -184,15 +184,24 @@
           const saveFriend = document.getElementById('saveFriend');
 
           saveFriend.addEventListener('click', function() {
-              const friendName = prompt('Enter a name for the friend:');
+              if (events) {
+                const friendName = prompt('Enter a name for the friend:');
 
-              localStorage.setItem(friendName, urlInput.value);
+                localStorage.setItem(friendName, urlInput.value);
+              } else {
+                alert("You can't save a friend until you've fed their events into the robot.")
+              }
           });
 
           const chooseFriend = document.getElementById('chooseFriend');
 
           chooseFriend.addEventListener('click', function() {
               const savedFriends = Object.keys(localStorage);
+
+              if (savedFriends.length === 0) {
+                alert("You haven't saved any of your friends yet.")
+                return;
+              }
               const selectFriend = document.createElement('select');
 
               console.log(selectFriend)
