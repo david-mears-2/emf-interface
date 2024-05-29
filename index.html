@@ -56,12 +56,12 @@
                             <option value="workshop">Workshop</option>
                         </select>
 
-                        <label for="ticketFilter">Requires Ticket:</label>
+                        <!-- <label for="ticketFilter">Requires Ticket:</label>
                         <select id="ticketFilter" class="form-select" onchange="applyFilters()">
                             <option value="">All</option>
                             <option value="true">Yes</option>
                             <option value="false">No</option>
-                        </select>
+                        </select> -->
 
                         <label for="futureFilter">Don't show events that finished in the past:</label>
                         <input type="checkbox" id="futureFilter" onchange="applyFilters()">
@@ -83,7 +83,7 @@
 
         function applyFilters() {
             const typeFilter = document.getElementById('typeFilter').value;
-            const ticketFilter = document.getElementById('ticketFilter').value || 'false'; // Some events don't have the key at all
+            // const ticketFilter = document.getElementById('ticketFilter').value; // Some events don't have the key at all
             const futureFilter = document.getElementById('futureFilter').value;
 
             const currentTime = new Date();
@@ -92,7 +92,8 @@
                 const endTime = new Date(events[index]['end_date']);
 
                 const matchesType = typeFilter === '' || item.dataset.type === typeFilter;
-                const matchesTicket = ticketFilter === '' || item.dataset.requiresTicket === ticketFilter;
+                // requiresTicket can be undefined when not provided in event
+
                 const matchesPast = !futureFilter.checked || endTime > currentTime;
 
                 if (matchesType && matchesTicket && matchesPast) {
@@ -105,7 +106,7 @@
 
         function clearFilters() {
             document.getElementById('typeFilter').value = '';
-            document.getElementById('ticketFilter').value = '';
+            // document.getElementById('ticketFilter').value = '';
             document.getElementById('futureFilter').checked = false;
             applyFilters();
         }
@@ -182,6 +183,8 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            clearFilters();
+
             const saveFriend = document.getElementById('saveFriend');
             const urlInput = document.getElementById('url');
 
